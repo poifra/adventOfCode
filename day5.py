@@ -1,6 +1,5 @@
 def isNice(input):
 	#not a single regex was given that day
-	from re import match
 	if("ab" in input or "cd" in input or "pq" in input or "xy" in input):
 		return False
 	if(input.count('a')+input.count('e')+input.count('i')+input.count('o')+input.count('u') < 3):
