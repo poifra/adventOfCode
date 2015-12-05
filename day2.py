@@ -1,9 +1,9 @@
 
 def calcPaper(dimensions):
-	l,w,h=dimensions[0],dimensions[1],dimensions[2]
-	size1=int(l)*int(w)
-	size2=int(w)*int(h)
-	size3=int(l)*int(h)
+	l,w,h=int(dimensions[0]),int(dimensions[1]),int(dimensions[2])
+	size1=l*w
+	size2=h*w
+	size3=l*h
 	smallestSide = min(size1,size2,size3)
 	return 2*size1 + 2*size2 + 2*size3 + smallestSide
 

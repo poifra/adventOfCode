@@ -1,4 +1,5 @@
 def magicNumber(input):
+#bruteforce ftw
 	from hashlib import md5
 	for i in range(10000000):
 		if(md5((input+str(i)).encode()).hexdigest()[:5] == "00000"):
