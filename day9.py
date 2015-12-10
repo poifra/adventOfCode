@@ -9,6 +9,7 @@ def hamPath(pairs, mode):
 	returns shortest or longest hamiltonian path in non-oriented graph given by pairs
 	'''
 	allDist = []
+
 	for x in perm(pairs):
 		allDist.append(sum(pairs[x[i]][x[i+1]] for i in range(len(x) - 1)))
 	return min(allDist) if mode == 'min' else max(allDist)
