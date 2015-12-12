@@ -1,5 +1,5 @@
 from itertools import groupby
-
+import time
 def lookAndSay(input):
 	'''
 	glorious itertools
@@ -19,9 +19,11 @@ if __name__ == '__main__':
 	assert lookAndSay('111221') == '312211'
 	
 	res = '3113322113' #input
-	nbIter = 40 #change at will
+	nbIter = 50 #change at will
+	start = time.time()
 	for _ in range(nbIter):
 		res = lookAndSay(res)
-	print(res) #for fun, but its not going to be pretty
+	#print(res) #for fun, but its not going to be pretty
 	print(len(res))
+	print(time.time()-start)
 	
