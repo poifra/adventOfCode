@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#data files for advent of code
+*data.txt
+
 # C extensions
 *.so
 
