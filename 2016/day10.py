@@ -10,7 +10,7 @@ def part1():
 			if botid in bots:
 				bots[botid] = sorted([int(value),bots[botid]])
 			else
-				bots[botid] = 
+				bots[botid] = int(value)
 	return decompress(data, False)
 
 def part2():
