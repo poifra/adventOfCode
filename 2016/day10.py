@@ -1,8 +1,8 @@
 def part1():
-	data = open('day10data.txt').read()
+	data = open('day10data.txt').read().split('\n')
 	bots = {}
 	outputs = {}
-	for line in data:
+	while data:
 		if line.startswith('value'):
 			words = line.split(' ')
 			botid = words[5]

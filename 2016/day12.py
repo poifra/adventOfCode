@@ -1,4 +1,4 @@
-def part1(registers ={'a':0,'b':0,'c':0,'d':0}):
+def part1(registers = {'a':0,'b':0,'c':0,'d':0}):
 	data = open('day12data.txt').read().split('\n')
 	
 	current = 0
@@ -32,6 +32,3 @@ def part1(registers ={'a':0,'b':0,'c':0,'d':0}):
 
 def part2():
 	return part1({'a':0,'b':0,'c':1,'d':0})
-
-if __name__=='__main__':
-	part2()
