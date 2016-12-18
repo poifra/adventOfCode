@@ -33,8 +33,6 @@ def genNext1000(func, data, index):
 
 def part1(manyTimes = False):
 	func = longMD5 if manyTimes else shortMD5
-	global computed
-	computed = {}
 	data = 'jlmsuwbz'
 	#data = 'abc'
 	hashes = []
@@ -60,4 +58,5 @@ def part2():
 
 if __name__=='__main__':
 	print(part1())
+	computed = {} #c
 	print(part2())
