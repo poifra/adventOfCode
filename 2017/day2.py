@@ -15,6 +15,7 @@ def problem():
 		checksum += max(line) - min(line)
 	print ("Part 1 :", checksum)
 
+	#part 2
 	checksum = 0
 	for line in data:
 		pairs = combinations(line,2)
