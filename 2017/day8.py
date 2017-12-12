@@ -1,5 +1,6 @@
 from collections import defaultdict
 def problem():
+	# problem description : http://adventofcode.com/2017/day/8
 	d = defaultdict(int)
 	#part 1
 	#one liners are cool
@@ -7,6 +8,7 @@ def problem():
 	print("part 1 :", max(d.values()))
 
 	#part 2
+	#very similar to part 1, but without all the one liner stuff
 	data = open('day8data.txt', 'r').read().replace('inc','+=').replace('dec','-=').replace('\n',' else 0\n').split('\n')
 	d = defaultdict(int)
 	maxVal = 0
