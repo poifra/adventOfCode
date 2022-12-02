@@ -1,0 +1,2 @@
+day1=max([sum(map(int,x.split('\n'))) for x in open('input1.txt').read().split('\n\n')]),sum(sorted([sum(map(int,x.split('\n'))) for x in open('input1.txt').read().split('\n\n')])[-3:])
+day2=sum([{'AX':4,'AY':8,'AZ':3,'BX':1,'BY':5,'BZ':9,'CX':7,'CY':2,'CZ':6}[x] for x in open('input2.txt').read().replace(' ','').split('\n')]),sum([{'AX':3,'AY':4,'AZ':8,'BX':1,'BY':5,'BZ':9,'CX':2,'CY':6,'CZ':7}[x] for x in open('input2.txt').read().replace(' ','').split('\n')])
