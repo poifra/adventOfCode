@@ -2,17 +2,17 @@ use std::fs;
 
 fn main() 
 {
- //   part1(false);
-    part1(true);
+    day1(false);
+    day1(true);
 }
-fn part1(replaceWords:bool)
+fn day1(replace_words:bool)
 {
     let path = "day1.txt";
     let result = read_lines(path);
     let mut sum = 0;
     for mut line in result
     {
-        if replaceWords
+        if replace_words
         {
             // there can be overlap, like oneight
             line = line.replace("one", "o1e");
@@ -44,9 +44,9 @@ fn part1(replaceWords:bool)
                 break;
             }
         }
-        let found = format!("{num1}{num2}").parse::<i32>().unwrap();
-        sum += found;
-       // println!("Found {found}")
+        let number = format!("{num1}{num2}").parse::<i32>().unwrap();
+        sum += number;
+       // println!("Found {number}")
     }
     println!("{sum}");
 }
