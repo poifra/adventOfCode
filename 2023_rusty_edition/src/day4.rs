@@ -25,12 +25,8 @@ pub fn part1() {
                 card_value *= 2;
             }
         }
-        if card_value == 1 {
-            card_value = 0; // if we never doubled, it means we never found a number
-        } else {
-            card_value /= 2; //off by a power, classic IT
-        }
-        sum += card_value
+        
+        sum += card_value >> 1; // 1 will be 0, meaning we found no match
     }
     println!("{sum}");
 }
