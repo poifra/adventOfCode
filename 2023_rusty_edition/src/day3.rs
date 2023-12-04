@@ -97,7 +97,7 @@ pub fn part2() {
         for num in number_finder.find_iter(row) {
             let start: usize = num.start();
             let end: usize = num.end();
-           // println!("Checking {0}", &row[num.start()..num.end()]);
+            // println!("Checking {0}", &row[num.start()..num.end()]);
 
             // check right
             if end < row.len() && row.as_bytes()[end] == b'*' {
@@ -148,7 +148,7 @@ pub fn part2() {
             }
         }
     }
-    for (k, v) in gears.into_iter() {
+    for (_, v) in gears.into_iter() {
         // let joined: String = v.iter().map(|&id| id.to_string() + ",").collect();
         // println!("{0}, {1}: {2}", k.0, k.1, joined);
         if v.len() == 2 {
