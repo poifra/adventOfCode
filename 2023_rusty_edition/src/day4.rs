@@ -62,7 +62,7 @@ pub fn part2() {
         {
             let mut nth_match: usize = 1;
             for num in &card_numbers {
-                if winning_numbers.contains(&num) {
+                if winning_numbers.contains(num) {
                     yo_dawg_i_heard_you_like_cards
                         .entry(card_id + nth_match)
                         .and_modify(|e| *e += 1);
