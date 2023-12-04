@@ -45,6 +45,10 @@ coverage.xml
 *,cover
 .hypothesis/
 
+#aoc inputs
+input*.txt
+day*.txt
+
 # Translations
 *.mo
 *.pot
