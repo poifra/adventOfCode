@@ -107,13 +107,13 @@ pub fn part1(part_2_flag: bool) {
                 let temperature = mapper(&light_to_temperature, light);
                 let humidity = mapper(&temperature_to_humidity, temperature);
                 let location = mapper(&humidity_to_location, humidity);
-               // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
+                // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
                 if location < min_loc {
                     min_loc = location;
                 }
             }
         }
-       
+        println!("{0}", min_loc-1);// -1 ????????
     } else {
         for num in seeds {
             let soil = mapper(&seed_to_soil, num);
@@ -128,9 +128,8 @@ pub fn part1(part_2_flag: bool) {
                 min_loc = location;
             }
         }
-
+        println!("{0}", min_loc); 
     }
-    println!("{0}",min_loc-1); // -1 ????????
 }
 
 fn fill_map2(line: &str, map_to_fill: &mut Vec<Mapping>) {
@@ -138,27 +137,18 @@ fn fill_map2(line: &str, map_to_fill: &mut Vec<Mapping>) {
     let start = nums[1];
     let end = nums[0];
     let range = nums[2];
-    map_to_fill.push(Mapping {
-        start,
-        end,
-        range,
-    });
+    map_to_fill.push(Mapping { start, end, range });
 }
 
-fn mapper(values: &Vec<Mapping>, seed: u64) -> u64 {
-    let mut mapping = 0;
-    for map in values {
-        if seed >= map.start && seed <= map.start + map.range {
+fn mapper(values: &[Mapping], seed: u64) -> u64 {
+    values
+        .iter()
+        .find(|map| seed >= map.start && seed <= map.start + map.range)
+        .map_or(seed, |map| {
             if map.start > map.end {
-                mapping = seed - (map.start - map.end);
+                seed - (map.start - map.end)
             } else {
-                mapping = seed + (map.end - map.start);
+                seed + (map.end - map.start)
             }
-            break;
-        }
-    }
-    if mapping == 0 {
-        mapping = seed;
-    }
-    mapping
+        })
 }
