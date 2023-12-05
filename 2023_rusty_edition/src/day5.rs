@@ -91,8 +91,8 @@ pub fn part1(part_2_flag: bool) {
 
     let mut min_loc: u64 = u64::MAX;
     if part_2_flag {
-        let real_seeds: Vec<u64> = seeds.iter().step_by(2).map(|e| *e).collect();
-        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).map(|e| *e).collect();
+        let real_seeds: Vec<u64> = seeds.iter().step_by(2).copied().collect();
+        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).copied().collect();
         // println!("{:?}", real_seeds);
         // println!("{:?}", seed_range);
         //        for num in (seed..seed+range)
@@ -133,15 +133,15 @@ pub fn part1(part_2_flag: bool) {
     println!("{0}",min_loc-1); // -1 ????????
 }
 
-fn fill_map2(line: &String, map_to_fill: &mut Vec<Mapping>) {
+fn fill_map2(line: &str, map_to_fill: &mut Vec<Mapping>) {
     let nums: Vec<u64> = line.split(' ').map(|s| s.parse::<u64>().unwrap()).collect();
     let start = nums[1];
     let end = nums[0];
     let range = nums[2];
     map_to_fill.push(Mapping {
-        start: start,
-        end: end,
-        range: range,
+        start,
+        end,
+        range,
     });
 }
 
@@ -149,7 +149,7 @@ fn mapper(values: &Vec<Mapping>, seed: u64) -> u64 {
     let mut mapping = 0;
     for map in values {
         if seed >= map.start && seed <= map.start + map.range {
-            if (map.start > map.end) {
+            if map.start > map.end {
                 mapping = seed - (map.start - map.end);
             } else {
                 mapping = seed + (map.end - map.start);
@@ -160,5 +160,5 @@ fn mapper(values: &Vec<Mapping>, seed: u64) -> u64 {
     if mapping == 0 {
         mapping = seed;
     }
-    return mapping;
+    mapping
 }
