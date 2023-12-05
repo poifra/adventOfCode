@@ -1,0 +1,164 @@
+use crate::utils;
+
+struct Mapping {
+    start: u64,
+    end: u64,
+    range: u64,
+}
+
+enum CurrentMapping {
+    SeedToSoil = 1,
+    SoilToFertilizer = 2,
+    FertilizerToWater = 3,
+    WaterToLight = 4,
+    LightToTemperature = 5,
+    TemperatureToHumidity = 6,
+    HumidityToLocation = 7,
+}
+pub fn part1(part_2_flag: bool) {
+    let input = utils::read_lines("day5.txt");
+    let mut mapping = CurrentMapping::SeedToSoil;
+    let mut seeds: Vec<u64> = Vec::new();
+
+    let mut seed_to_soil: Vec<Mapping> = Vec::new();
+    let mut soil_to_fertilizer: Vec<Mapping> = Vec::new();
+    let mut fertilizer_to_water: Vec<Mapping> = Vec::new();
+    let mut water_to_light: Vec<Mapping> = Vec::new();
+    let mut light_to_temperature: Vec<Mapping> = Vec::new();
+    let mut temperature_to_humidity: Vec<Mapping> = Vec::new();
+    let mut humidity_to_location: Vec<Mapping> = Vec::new();
+
+    for line in input {
+        //   println!("{line}");
+        if line.is_empty() {
+            continue;
+        }
+        if line.starts_with("seeds:") {
+            seeds = line[7..]
+                .split(' ')
+                .map(|s| s.parse::<u64>().unwrap())
+                .collect();
+            continue;
+        }
+
+        if line.find('-').is_none() {
+            match mapping {
+                CurrentMapping::SeedToSoil => fill_map2(&line, &mut seed_to_soil),
+                CurrentMapping::SoilToFertilizer => fill_map2(&line, &mut soil_to_fertilizer),
+                CurrentMapping::FertilizerToWater => fill_map2(&line, &mut fertilizer_to_water),
+                CurrentMapping::WaterToLight => fill_map2(&line, &mut water_to_light),
+                CurrentMapping::LightToTemperature => fill_map2(&line, &mut light_to_temperature),
+                CurrentMapping::TemperatureToHumidity => {
+                    fill_map2(&line, &mut temperature_to_humidity)
+                }
+                CurrentMapping::HumidityToLocation => fill_map2(&line, &mut humidity_to_location),
+            }
+            continue;
+        }
+
+        match &line[0..line.find('-').unwrap()] {
+            "seed" => {
+                mapping = CurrentMapping::SeedToSoil;
+                continue;
+            }
+            "soil" => {
+                mapping = CurrentMapping::SoilToFertilizer;
+                continue;
+            }
+            "fertilizer" => {
+                mapping = CurrentMapping::FertilizerToWater;
+                continue;
+            }
+            "water" => {
+                mapping = CurrentMapping::WaterToLight;
+                continue;
+            }
+            "light" => {
+                mapping = CurrentMapping::LightToTemperature;
+                continue;
+            }
+            "temperature" => {
+                mapping = CurrentMapping::TemperatureToHumidity;
+                continue;
+            }
+            "humidity" => {
+                mapping = CurrentMapping::HumidityToLocation;
+                continue;
+            }
+            _ => (),
+        }
+    }
+
+    let mut min_loc: u64 = u64::MAX;
+    if part_2_flag {
+        let real_seeds: Vec<u64> = seeds.iter().step_by(2).map(|e| *e).collect();
+        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).map(|e| *e).collect();
+        // println!("{:?}", real_seeds);
+        // println!("{:?}", seed_range);
+        //        for num in (seed..seed+range)
+
+        for (index, seed) in real_seeds.iter().enumerate() {
+            let range = seed_range[index];
+            for num in *seed..seed + range {
+                let soil = mapper(&seed_to_soil, num);
+                let fertilizer = mapper(&soil_to_fertilizer, soil);
+                let water = mapper(&fertilizer_to_water, fertilizer);
+                let light = mapper(&water_to_light, water);
+                let temperature = mapper(&light_to_temperature, light);
+                let humidity = mapper(&temperature_to_humidity, temperature);
+                let location = mapper(&humidity_to_location, humidity);
+               // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
+                if location < min_loc {
+                    min_loc = location;
+                }
+            }
+        }
+       
+    } else {
+        for num in seeds {
+            let soil = mapper(&seed_to_soil, num);
+            let fertilizer = mapper(&soil_to_fertilizer, soil);
+            let water = mapper(&fertilizer_to_water, fertilizer);
+            let light = mapper(&water_to_light, water);
+            let temperature = mapper(&light_to_temperature, light);
+            let humidity = mapper(&temperature_to_humidity, temperature);
+            let location = mapper(&humidity_to_location, humidity);
+            // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
+            if location < min_loc {
+                min_loc = location;
+            }
+        }
+
+    }
+    println!("{0}",min_loc-1); // -1 ????????
+}
+
+fn fill_map2(line: &String, map_to_fill: &mut Vec<Mapping>) {
+    let nums: Vec<u64> = line.split(' ').map(|s| s.parse::<u64>().unwrap()).collect();
+    let start = nums[1];
+    let end = nums[0];
+    let range = nums[2];
+    map_to_fill.push(Mapping {
+        start: start,
+        end: end,
+        range: range,
+    });
+}
+
+fn mapper(values: &Vec<Mapping>, seed: u64) -> u64 {
+    let mut mapping = 0;
+    for map in values {
+        if seed >= map.start && seed <= map.start + map.range {
+            if (map.start > map.end) {
+                mapping = seed - (map.start - map.end);
+            } else {
+                mapping = seed + (map.end - map.start);
+            }
+            break;
+        }
+    }
+    if mapping == 0 {
+        mapping = seed;
+    }
+    return mapping;
+}

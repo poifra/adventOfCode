@@ -25,7 +25,7 @@ pub fn part1() {
                 card_value *= 2;
             }
         }
-        
+
         sum += card_value >> 1; // 1 will be 0, meaning we found no match
     }
     println!("{sum}");
@@ -62,7 +62,7 @@ pub fn part2() {
         {
             let mut nth_match: usize = 1;
             for num in &card_numbers {
-                if winning_numbers.contains(num) {
+                if winning_numbers.contains(&num) {
                     yo_dawg_i_heard_you_like_cards
                         .entry(card_id + nth_match)
                         .and_modify(|e| *e += 1);
