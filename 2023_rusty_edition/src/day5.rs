@@ -1,4 +1,5 @@
 use crate::utils;
+use rayon::prelude::*;
 
 struct Mapping {
     start: u64,
@@ -90,16 +91,38 @@ pub fn part1(part_2_flag: bool) {
     }
 
     let mut min_loc: u64 = u64::MAX;
-    if part_2_flag {
-        let real_seeds: Vec<u64> = seeds.iter().step_by(2).copied().collect();
-        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).copied().collect();
-        // println!("{:?}", real_seeds);
-        // println!("{:?}", seed_range);
-        //        for num in (seed..seed+range)
 
-        for (index, seed) in real_seeds.iter().enumerate() {
-            let range = seed_range[index];
-            for num in *seed..seed + range {
+    if part_2_flag {
+        let real_seeds: Vec<u64> = seeds.iter().step_by(2).map(|e| *e).collect();
+        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).map(|e| *e).collect();
+
+        // Use Rayon's par_iter() to parallelize the loop and reduce to find the minimum
+        min_loc = real_seeds
+            .par_iter()
+            .enumerate()
+            .map(|(index, seed)| {
+                let range = seed_range[index];
+                (0..range)
+                    .into_par_iter()
+                    .map(|num| {
+                        let current_seed = seed + num;
+                        let soil = mapper(&seed_to_soil, current_seed);
+                        let fertilizer = mapper(&soil_to_fertilizer, soil);
+                        let water = mapper(&fertilizer_to_water, fertilizer);
+                        let light = mapper(&water_to_light, water);
+                        let temperature = mapper(&light_to_temperature, light);
+                        let humidity = mapper(&temperature_to_humidity, temperature);
+                        let location = mapper(&humidity_to_location, humidity);
+                        location
+                    })
+                    .reduce(|| u64::MAX, |a, b| if a < b { a } else { b })
+            })
+            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b });
+    } else {
+        // Use Rayon's par_iter() to parallelize the loop and reduce to find the minimum
+        min_loc = seeds
+            .par_iter()
+            .map(|&num| {
                 let soil = mapper(&seed_to_soil, num);
                 let fertilizer = mapper(&soil_to_fertilizer, soil);
                 let water = mapper(&fertilizer_to_water, fertilizer);
@@ -107,28 +130,15 @@ pub fn part1(part_2_flag: bool) {
                 let temperature = mapper(&light_to_temperature, light);
                 let humidity = mapper(&temperature_to_humidity, temperature);
                 let location = mapper(&humidity_to_location, humidity);
-                // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
-                if location < min_loc {
-                    min_loc = location;
-                }
-            }
-        }
-        println!("{0}", min_loc-1);// -1 ????????
+                location
+            })
+            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b });
+    }
+
+    if part_2_flag {
+        println!("{0}", min_loc - 1);
     } else {
-        for num in seeds {
-            let soil = mapper(&seed_to_soil, num);
-            let fertilizer = mapper(&soil_to_fertilizer, soil);
-            let water = mapper(&fertilizer_to_water, fertilizer);
-            let light = mapper(&water_to_light, water);
-            let temperature = mapper(&light_to_temperature, light);
-            let humidity = mapper(&temperature_to_humidity, temperature);
-            let location = mapper(&humidity_to_location, humidity);
-            // println!("Seed {num}, soil {soil}, fertilizer {fertilizer}, water {water}, light {light}, temperature {temperature}, humidity {humidity}, location {location}.");
-            if location < min_loc {
-                min_loc = location;
-            }
-        }
-        println!("{0}", min_loc); 
+        println!("{0}", min_loc);
     }
 }
 

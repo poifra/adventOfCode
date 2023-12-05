@@ -5,7 +5,7 @@ mod day4;
 mod day5;
 mod utils;
 
-// use std::time::Instant;
+ use std::time::Instant;
 fn main() {
     // day1::part1(false);
     // day1::part2();
@@ -16,7 +16,7 @@ fn main() {
     // day4::part1();
     // day4::part2();
     day5::part1(false);
-    // let now = Instant::now();
+    let now = Instant::now();
     day5::part1(true);
-    // println!("{0} secs",now.elapsed().as_secs_f64());
+    println!("{0} secs",now.elapsed().as_secs_f64());
 }
