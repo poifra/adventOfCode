@@ -112,8 +112,7 @@ pub fn part1(part_2_flag: bool) {
                         let light = mapper(&water_to_light, water);
                         let temperature = mapper(&light_to_temperature, light);
                         let humidity = mapper(&temperature_to_humidity, temperature);
-                        let location = mapper(&humidity_to_location, humidity);
-                        location
+                        mapper(&humidity_to_location, humidity)
                     })
                     .reduce(|| u64::MAX, |a, b| if a < b { a } else { b })
             })
@@ -129,8 +128,8 @@ pub fn part1(part_2_flag: bool) {
                 let light = mapper(&water_to_light, water);
                 let temperature = mapper(&light_to_temperature, light);
                 let humidity = mapper(&temperature_to_humidity, temperature);
-                let location = mapper(&humidity_to_location, humidity);
-                location
+                mapper(&humidity_to_location, humidity)
+                
             })
             .reduce(|| u64::MAX, |a, b| if a < b { a } else { b });
     }
