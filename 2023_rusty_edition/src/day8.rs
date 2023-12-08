@@ -1,3 +1,5 @@
+use itertools::Itertools;
+
 use crate::utils;
 use std::collections::HashMap;
 
@@ -30,7 +32,7 @@ pub fn part1(part_2_flag: bool) {
     let mut node_mapping: HashMap<(String, char), String> = HashMap::new();
     let mut directions: String = String::new();
     let mut current_node: String = String::new();
-    
+
     for mut line in input {
         if line.is_empty() {
             continue;
@@ -60,13 +62,12 @@ pub fn part1(part_2_flag: bool) {
     }
 
     if part_2_flag {
-        let start_points = node_mapping
+        let lcm = node_mapping
             .keys()
             .filter(|(n, _)| n.ends_with('A'))
-            .map(|(n, _)| n.to_string());
-
-        let lcm = start_points
-            .map(|mut p| {               
+            .map(|(n, _)| n.to_string())
+            .unique()
+            .map(|mut p| {
                 let mut steps = 0;
                 while !p.ends_with('Z') {
                     p = node_mapping[&(
