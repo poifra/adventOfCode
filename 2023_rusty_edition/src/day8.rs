@@ -11,9 +11,7 @@ fn gcd(first: u64, second: u64) -> u64 {
     let mut max = first;
     let mut min = second;
     if min > max {
-        let val = max;
-        max = min;
-        min = val;
+        std::mem::swap(&mut max, &mut min)
     }
 
     loop {
@@ -31,7 +29,7 @@ pub fn part1(part_2_flag: bool) {
     let input = utils::read_lines("day8.txt");
     let mut node_mapping: HashMap<(String, char), String> = HashMap::new();
     let mut directions: String = String::new();
-    let mut current_node: String = String::new();
+    let mut current_node: String;
 
     for mut line in input {
         if line.is_empty() {
@@ -42,15 +40,13 @@ pub fn part1(part_2_flag: bool) {
             directions = line;
         } else {
             line = line
-                .replace('(', "")
-                .replace(')', "")
+                .replace(['(',')',','], "")
                 .replace(" =", "")
-                .replace(',', "")
                 .trim()
                 .to_string();
             //println!("{line}");
 
-            let mut split = line.split(' ').map(String::from).into_iter();
+            let mut split = line.split(' ').map(String::from);
 
             let node = split.next().unwrap();
             let left = split.next().unwrap();
@@ -79,13 +75,13 @@ pub fn part1(part_2_flag: bool) {
                 }
                 steps as u64
             })
-            .into_iter()
-            .reduce(|acc, n| lcm(acc, n))
+            .reduce(lcm)
             .unwrap();
         println!("{lcm}");
     } else {
         let mut steps = 0;
         current_node = "AAA".to_string();
+      
         while current_node != "ZZZ" {
             current_node = node_mapping[&(
                 current_node,

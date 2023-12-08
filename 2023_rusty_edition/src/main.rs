@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 
 mod day1;
 mod day2;
@@ -13,3 +12,4 @@ fn main() {
     day8::part1(false);
     day8::part1(true);
 }
+
