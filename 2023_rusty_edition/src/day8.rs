@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use itertools::Itertools;
 
 use crate::utils;
@@ -40,7 +41,7 @@ pub fn part1(part_2_flag: bool) {
             directions = line;
         } else {
             line = line
-                .replace(['(',')',','], "")
+                .replace(['(', ')', ','], "")
                 .replace(" =", "")
                 .trim()
                 .to_string();
@@ -81,7 +82,7 @@ pub fn part1(part_2_flag: bool) {
     } else {
         let mut steps = 0;
         current_node = "AAA".to_string();
-      
+
         while current_node != "ZZZ" {
             current_node = node_mapping[&(
                 current_node,

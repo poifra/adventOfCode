@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::utils;
 use rayon::prelude::*;
 
@@ -90,14 +91,13 @@ pub fn part1(part_2_flag: bool) {
         }
     }
 
-    let mut min_loc: u64 = u64::MAX;
-
+    let min_loc =
     if part_2_flag {
-        let real_seeds: Vec<u64> = seeds.iter().step_by(2).map(|e| *e).collect();
-        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).map(|e| *e).collect();
+        let real_seeds: Vec<u64> = seeds.iter().step_by(2).copied().collect();
+        let seed_range: Vec<u64> = seeds.iter().skip(1).step_by(2).copied().collect();
 
         // Use Rayon's par_iter() to parallelize the loop and reduce to find the minimum
-        min_loc = real_seeds
+        real_seeds
             .par_iter()
             .enumerate()
             .map(|(index, seed)| {
@@ -116,10 +116,10 @@ pub fn part1(part_2_flag: bool) {
                     })
                     .reduce(|| u64::MAX, |a, b| if a < b { a } else { b })
             })
-            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b });
+            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b })
     } else {
         // Use Rayon's par_iter() to parallelize the loop and reduce to find the minimum
-        min_loc = seeds
+        seeds
             .par_iter()
             .map(|&num| {
                 let soil = mapper(&seed_to_soil, num);
@@ -130,8 +130,8 @@ pub fn part1(part_2_flag: bool) {
                 let humidity = mapper(&temperature_to_humidity, temperature);
                 mapper(&humidity_to_location, humidity)
             })
-            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b });
-    }
+            .reduce(|| u64::MAX, |a, b| if a < b { a } else { b })
+    };
 
     if part_2_flag {
         println!("{0}", min_loc - 1);

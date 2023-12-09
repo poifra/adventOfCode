@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::utils;
 use regex::Regex;
 use std::{cmp, collections::HashMap};

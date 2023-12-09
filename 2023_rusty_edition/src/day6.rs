@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub fn part1(flag_part_2: bool) {
     match flag_part_2 {
         true => {

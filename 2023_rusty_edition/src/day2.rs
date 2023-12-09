@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::utils;
 pub fn part1() {
     let file = utils::read_lines("day2.txt");

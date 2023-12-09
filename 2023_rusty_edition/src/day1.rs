@@ -1,5 +1,5 @@
+#![allow(dead_code)]
 use crate::utils;
-
 pub fn part1(replace_words: bool) {
     let path = "day1.txt";
     let result = utils::read_lines(path);
